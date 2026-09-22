@@ -4,7 +4,7 @@ export function validateOrder(q:Quote,inputMint:string,outputMint:string,amount:
  // Jupiter returns usable prices with an empty transaction when wallet funding
  // prevents transaction construction. Keep those prices, but never a signable tx.
  const quoteOnly=q.transaction===''&&Number.isInteger(q.errorCode);
- if(q.error||(q.errorMessage&&!quoteOnly)||!q.outAmount||!/^\d+$/.test(q.outAmount)||BigInt(q.outAmount)<=BigInt(0)) {
+ if((q.error&&(!quoteOnly||q.error!==q.errorMessage))||(q.errorMessage&&!quoteOnly)||!q.outAmount||!/^\d+$/.test(q.outAmount)||BigInt(q.outAmount)<=BigInt(0)) {
   throw new Error(q.errorMessage||q.error||'No executable route is available for this amount.');
  }
  if(q.inputMint!==inputMint||q.outputMint!==outputMint||q.inAmount!==amount) {

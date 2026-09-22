@@ -8,7 +8,7 @@ const validate=q=>validateOrder(q,'USDC','STOCK','1000000');
 test('unfunded wallet retains valid pricing without a signable transaction',()=>{
  for(const router of ['metis','jupiterz','dflow','okx']) {
   for(const errorCode of [1,2,3]) {
-   const result=validate({...order,router,transaction:'',errorCode,errorMessage:'Insufficient funds'});
+   const result=validate({...order,router,transaction:'',errorCode,errorMessage:'Insufficient funds',error:'Insufficient funds'});
    assert.equal(result.outAmount,'950');
    assert.equal(result.transaction,'');
    assert.equal(result.errorMessage,'Insufficient funds');
@@ -27,6 +27,7 @@ test('funding warning cannot bypass amount and mint validation',()=>{
 });
 test('fatal errors and inconsistent signable error responses fail closed',()=>{
  assert.throws(()=>validate({...order,error:'No route'}));
+ assert.throws(()=>validate({...order,transaction:'',errorCode:1,errorMessage:'Insufficient funds',error:'Unrelated provider failure'}));
  assert.throws(()=>validate({...order,errorMessage:'No route'}));
  assert.throws(()=>validate({...order,transaction:'encoded',errorCode:1,errorMessage:'Insufficient funds'}));
 });
