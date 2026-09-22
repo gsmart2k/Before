@@ -8,7 +8,7 @@ A Solana app for exploring exclusively PreStocks tokens, understanding the impli
 
 ## Run
 
-Requires Node 22.13 or newer for the app. Regression tests use native TypeScript support; Node 22.18 or newer is needed to run the test command as written. The project was built and tested with Node 26.0.0.
+Use Node.js 24.x for deployment and local development.
 
 ```sh
 npm ci
@@ -66,3 +66,9 @@ Run `node --test tests/*.test.mjs`. These cover token scaling, fractional multip
 - [Submission status](docs/STATUS.md)
 
 A recording script is provided; no demo video is included. No real-money transaction was performed during validation.
+
+## Deploy to Vercel
+
+Import `gsmart2k/Before` from GitHub, use the Next.js framework preset and repository root, and deploy the `main` branch. `vercel.json` supplies the install and build commands. No environment variables are required for the current keyless data integrations. API routes run as Node.js functions with a 60-second limit.
+
+The original Cloudflare/Sites workflows remain available as `npm run dev:sites`, `npm run build:sites`, and `npm run start:sites`.

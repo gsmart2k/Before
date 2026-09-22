@@ -4,9 +4,6 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Before — Know your entry. Understand your exit.",
   description: "Explore PreStocks, understand implied valuations, and compare live entry and exit quotes before you invest.",
-  other: {
-    "codex-preview": "development",
-  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
