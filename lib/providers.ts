@@ -1,3 +1,4 @@
+import {validateOrder} from './quote-validation';
 import { USDC, type Stock, type Quote, type Preview } from './market';
 import {tokenDisplayConfig,displayTokenAmount} from './token-units';
 let catalogCache:{stocks:Stock[];fetchedAt:string;expires:number}|undefined;
@@ -35,9 +36,7 @@ export async function tokenUnits(mint:string){
 async function order(inputMint:string,outputMint:string,amount:string,taker?:string):Promise<Quote>{
  const params=new URLSearchParams({inputMint,outputMint,amount});if(taker)params.set('taker',taker);
  const q=await json('https://api.jup.ag/swap/v2/order?'+params);
- if(q.errorMessage||q.error||!q.outAmount||BigInt(q.outAmount)<=BigInt(0))throw new Error(q.errorMessage||q.error||'No executable route is available for this amount.');
- if(q.inputMint!==inputMint||q.outputMint!==outputMint||q.inAmount!==amount)throw new Error('The quote did not match the requested trade.');
- return q;
+ return validateOrder(q,inputMint,outputMint,amount);
 }
 export async function preview(mint:string,amount:number,taker?:string):Promise<Preview>{
  if(!Number.isFinite(amount)||amount<1||amount>10000||Math.abs(amount*100-Math.round(amount*100))>0.0001)throw new Error('Enter an amount from 1 to 10,000 USDC, with at most two decimal places.');
